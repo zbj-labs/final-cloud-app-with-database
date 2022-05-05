@@ -57,11 +57,15 @@
                     <h5 class="card-title">{{ question.question }}</h5>
                 </div>
                 <div class="card-body">
-                    {% for choice in question.choices %}
-                    {% if choice.is_correct %}
-                    <p class="card-text text-success">Correct answer: {{ choice.choice }}</p>
+                    {% for choice in question.choice_set.all %}
+                    {% if choice.is_correct and choice in choices%}
+                    <p class="card-text text-success">Correct answer: {{ choice.text }}</p>
+                    {% elif choice.is_correct and choice not in choices%}
+                    <p class="card-text text-warning">Not selected: {{ choice.text }}</p>
+                    {% elif choice.is_correct == False and choice in choices%}
+                    <p class="card-text text-danger">Wrong answer: {{ choice.text }}</p>
                     {% else %}
-                    <p class="card-text text-success">{{ choice.choice }}</p>
+                    <p class="card-text text-dark">{{ choice.text }}</p>
                     {% endif %}
                     {% endfor %}
                 </div>
