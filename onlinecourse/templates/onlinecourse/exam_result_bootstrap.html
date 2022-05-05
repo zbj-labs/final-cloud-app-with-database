@@ -51,7 +51,16 @@
         <div class="card-columns-vertical mt-1">
         <h5 class="">Exam results</h5>
             <!-- Display exam results-->
-            <b>Score: {{ grade }} / 100</b>
+            {% for question in questions %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title">{{ question.question }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ question.answer }}</p>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </body>
