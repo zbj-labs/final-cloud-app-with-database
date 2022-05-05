@@ -106,8 +106,8 @@ class Enrollment(models.Model):
     # question text
     # question grade/mark
 class Question(models.Model):
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    text = models.TextField()
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    text = models.CharField(max_length=550, default="")
     grade = models.IntegerField(default=0)
 
     # Lab2: A sample model method to calculate if learner get the score of the question
@@ -128,7 +128,7 @@ class Question(models.Model):
     # Other fields and methods you would like to design
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    text = models.TextField()
+    text = models.CharField(max_length=550, default="")
     is_correct = models.BooleanField(default=False)
     
 

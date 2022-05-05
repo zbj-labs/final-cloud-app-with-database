@@ -140,9 +140,9 @@ def show_exam_result(request, course_id, submission_id):
     total_score = 0.0
     choices = submission.choices.all()
     # Calculate the total score
-    for choice in choices.choice_set:
-        if choice.is_correct:
-            total_score += choice.question.grade
+    for question in course.question_set.all():
+        if question.is_correct:
+            total_score += question.grade
 
     return render(request, 'onlinecourse/show_exam_result_bootstrap.html', {'course': course, 'submission': submission, 'grade': total_score})
 
