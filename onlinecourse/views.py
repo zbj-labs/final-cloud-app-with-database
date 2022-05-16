@@ -110,39 +110,39 @@ def submit(request, course_id):
     # Create a submission object referring to the enrollment
     enrollment = Enrollment.objects.get(user=user, course=course)
     submission = Submission.objects.create(enrollment=enrollment)
-    answers = extract_answers(request)
+    answers = extract_answers(request=request)
     # Collect the selected choices from exam form
     submission.choices.set(answers)
     # Add each selected choice object to the submission object
     submission.save()
     # Redirect to show_exam_result with the submission id
-    return HttpResponseRedirect(reverse(viewname='onlinecourse:show_exam_result', args=(submission.id,)))
-
+    return HttpResponseRedirect(reverse(viewname='onlinecourse:exam_result', args=(course.id, submission.id,)))
 
 # A method to collect the selected choices from the exam form from the request object
 def extract_answers(request):
-   submitted_answers = []
+   answers = []
    for key in request.POST:
        if key.startswith('choice'):
            value = request.POST[key]
            choice_id = int(value)
-           submitted_answers.append(choice_id)
-   return submitted_answers
-
+           answers.append(Choice.objects.get(id=choice_id))
+   return answers
 
 # Create an exam result view to check if learner passed exam and show their question results and result for each question
 def show_exam_result(request, course_id, submission_id):
     # Get course and submission based on their ids
     course = get_object_or_404(Course, pk=course_id)
-    # Get the selected choice ids from the submission record
     submission = get_object_or_404(Submission, pk=submission_id)
-    # For each selected choice, check if it is a correct answer or not
-    total_score = 0.0
+    # Get the selected choice ids from the submission record
     choices = submission.choices.all()
+    # For each selected choice, check if it is a correct answer or not
+    total_score = 0
+    local_score = 0
     # Calculate the total score
     for question in course.question_set.all():
-        if question.is_correct:
-            total_score += question.grade
+        total_score += question.grade
+        if question.is_get_score(choices):
+            local_score += question.grade
 
-    return render(request, 'onlinecourse/show_exam_result_bootstrap.html', {'course': course, 'submission': submission, 'grade': total_score})
-
+    return render(request, 'onlinecourse/exam_result_bootstrap.html', {'course':course, 'choices':choices, 'submission': submission, 'grade': int(100 * local_score / total_score)})
+    
