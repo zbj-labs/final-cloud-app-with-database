@@ -12,7 +12,7 @@ class ChoiceInline(admin.TabularInline):
     extra = 1
 class LessonInline(admin.StackedInline):
     model = Lesson
-    extra = 5
+    extra = 1
 
 
 # Register your models here.
