@@ -1,7 +1,7 @@
   applications:
   - name: onlinecourse
     routes:
-      - route: joaomartins1.eu-gb.mybluemix.net
+      - route: joaomartins1.eu-gb.cf.appdomain.cloud
     memory: 128M
     buildpack: python_buildpack
   - name: onlinecourse-nginx
