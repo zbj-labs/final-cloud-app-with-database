@@ -54,7 +54,7 @@
             <!-- <HINT> Use Bootstrap Collapse to hide exam first, more details could be found here
             https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
 
-            <button class="btn btn-info btn-block" data-toggle="collapse" data-target="exam">Start Exam</button>
+            <button class="btn btn-info btn-block" data-toggle="collapse" data-target="#exam">Start Exam</button>
             <br>
 
             <div id="exam" class="collapse in">
@@ -68,14 +68,14 @@
                     <form id="questionform", action="{% url 'onlinecourse:submit' course.id %}" method="post">
                         {% for question in course.question_set.all %}
                         <div class="card mt-1">
-                            <div class="card-header"><h5>{{ question.question }}</h5></div>
+                            <div class="card-header"><h5>{{ question.text }}</h5></div>
                             {% csrf_token %}
                             <div class="form-group">
                                 {% for choice in question.choice_set.all %}
                                 <div class="form-check">
                                     <label class="form-check-label"></label>
                                     <input type="checkbox" name="choice_{{choice.id}}" id="{{choice.id}}"
-                                        class="form-check-input" value="{{choice.id}}">{{ choice.choice }}
+                                        class="form-check-input" value="{{choice.id}}">{{ choice.text }}
                                     </label>
                                 </div>
                                 {% endfor %}
